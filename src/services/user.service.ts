@@ -15,22 +15,24 @@ export const userService = {
     name: string;
     email: string;
     phone: string;
-    positionId: number;
+    positionId: string;
     photo: string;
   }): Promise<User> => {
-
+  
+    const parsedPositionId = parseInt(positionId, 10);
+  
     const user = await prisma.user.create({
       data: {
         name,
         email,
         phone,
-        positionId,
+        positionId: parsedPositionId,
         photo,
       },
     });
-
+  
     return user;
-  },
+  },  
   getUserById: async (id: number) => {
     const product = await prisma.user.findUnique({
       where: {

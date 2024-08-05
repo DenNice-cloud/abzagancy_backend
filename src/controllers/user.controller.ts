@@ -3,24 +3,49 @@ import { userService } from "../services/user.service";
 
 const getAllUsers = async (req: Request, res: Response) => {
   const users = await userService.getAllUsers();
+  // const page = req.query.page ? parseInt(req.query.page as string, 10) : 1;
+  // const count = req.query.count ? parseInt(req.query.count as string, 10) : 6;
 
-  res.send(users);
+  // if (isNaN(page) || page < 1) {
+  //   return res.status(400).send({
+  //     success: false,
+  //     message: "Invalid page parameter.",
+  //   });
+  // }
+
+  // if (isNaN(count) || count < 1) {
+  //   return res.status(400).send({
+  //     success: false,
+  //     message: "Invalid count parameter.",
+  //   });
+  // }
+
+  // const startFrom = (page - 1) * count;
+  // const endTo = page * count;
+  // const paramsUser = users.slice(startFrom, endTo);
+
+  return res.status(200).send(users);
 };
 
 const getUserById = async (req: Request, res: Response) => {
   const userId = parseInt(req.params.id, 10);
-
-  if (isNaN(userId)) {
-    return res.status(400).send({ error: 'Invalid ID format' });
-  }
-
   const user = await userService.getUserById(userId);
 
-  if (!user) {
-    return res.status(404).send({ error: 'User not found' });
+  if (isNaN(userId)) {
+    return res.status(400).send({
+      success: false,
+      message: "Invalid ID format",
+    });
   }
-  
-  res.status(200).send(user);
+
+  if (!user) {
+    return res.status(400).send({
+      success: false,
+      message: "User not found",
+    });
+  }
+
+  return res.status(200).send(user);
 };
 
 const postUser = async (req: Request, res: Response) => {
@@ -62,7 +87,7 @@ const postUser = async (req: Request, res: Response) => {
     photo,
   });
 
-  res.status(200).send(user);
+  return res.status(200).send(user);
 };
 
 export const userController = {

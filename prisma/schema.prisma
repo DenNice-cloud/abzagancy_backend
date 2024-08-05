@@ -23,3 +23,11 @@ model Positions {
 
   users User[]
 }
+
+// "id": 5,
+// "Peaches-Honeyblossom-Michelle-Charlotte-Angel-Vanessa",
+//  "peaches.honeyblossom.michelle.charlotte.angel.vanessa@gmail.com",
+//  "+380672278518",
+// "Designer",
+// 4,
+// https://frontend-test-assignment-api.abz.agency/images/users/5fa2a65972a8f5.jpeg
