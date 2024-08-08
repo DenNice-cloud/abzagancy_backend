@@ -18,9 +18,8 @@ export const userService = {
     positionId: string;
     photo: string;
   }): Promise<User> => {
-  
     const parsedPositionId = parseInt(positionId, 10);
-  
+
     const user = await prisma.user.create({
       data: {
         name,
@@ -30,9 +29,10 @@ export const userService = {
         photo,
       },
     });
-  
+
     return user;
-  },  
+  },
+
   getUserById: async (id: number) => {
     const product = await prisma.user.findUnique({
       where: {
@@ -40,5 +40,5 @@ export const userService = {
       },
     });
     return product;
-  }
+  },
 };

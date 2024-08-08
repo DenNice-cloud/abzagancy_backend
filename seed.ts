@@ -1,33 +1,59 @@
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient } from "@prisma/client";
+import axios from "axios";
 
 const prisma = new PrismaClient();
 
 async function main() {
-  await prisma.positions.createMany({
-    data: [
-      { id: 1, name: "Lawyer" },
-      { id: 2, name: "Content manager" },
-      { id: 3, name: "Security" },
-      { id: 4, name: "Designer" }
-    ],
-  });
+  const apiUserUrl =
+    "https://frontend-test-assignment-api.abz.agency/api/v1/users?page=1&count=50";
+    
+  const apiPositionUrl =
+    "https://frontend-test-assignment-api.abz.agency/api/v1/positions";
 
-  await prisma.user.create({
-    data: {
-      id: 22635,
-      name: "Annaa",
-      email: "ana0@gmail.com",
-      phone: "+380998887766",
-      positionId: 1,
-      photo: "https://frontend-test-assignment-api.abz.agency/images/users/66ab95e0e880822635.jpg",
-    },
-  });
+  try {
+    const responseUsers = await axios.get(apiUserUrl);
+    const { success: successUsers, users } = responseUsers.data;
 
-  console.log('User and positions created!');
+    const responsePositions = await axios.get(apiPositionUrl);
+    const { success: successPositions, positions } = responsePositions.data;
+
+    if (successUsers && Array.isArray(users) && successPositions && Array.isArray(positions)) {
+      await prisma.user.deleteMany({});
+      await prisma.positions.deleteMany({});
+
+      for (const position of positions) {
+        await prisma.positions.create({
+          data: {
+            id: position.id,
+            name: position.name,
+          },
+        });
+      }
+
+      for (const user of users) {
+        await prisma.user.create({
+          data: {
+            id: user.id,
+            name: user.name,
+            email: user.email,
+            phone: user.phone,
+            positionId: user.position_id,
+            registrationTimestamp: user.registration_timestamp,
+            photo: user.photo,
+          },
+        });
+      }
+    }
+
+  } catch (error) {
+    console.error("Error fetching or inserting data:", error);
+  } finally {
+    await prisma.$disconnect();
+  }
 }
 
 main()
-  .catch(e => {
+  .catch(async (e) => {
     throw e;
   })
   .finally(async () => {

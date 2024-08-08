@@ -8,26 +8,22 @@ generator client {
 }
 
 model User {
-  id         Int        @id @default(autoincrement()) @unique
+  id         Int        @id @unique @default(autoincrement()) 
   name       String
   email      String     @unique
   phone      String
   positionId Int        
   position   Positions  @relation(fields: [positionId], references: [id])
   photo      String
+  registrationTimestamp  Int    @default(0)
 }
+// npx prisma migrate dev --name add_registration_timestamp
+// npx prisma generate
 
 model Positions {
-  id   Int    @id @default(autoincrement()) @unique
+  id   Int    @id @default(autoincrement())
   name String
 
   users User[]
 }
 
-// "id": 5,
-// "Peaches-Honeyblossom-Michelle-Charlotte-Angel-Vanessa",
-//  "peaches.honeyblossom.michelle.charlotte.angel.vanessa@gmail.com",
-//  "+380672278518",
-// "Designer",
-// 4,
-// https://frontend-test-assignment-api.abz.agency/images/users/5fa2a65972a8f5.jpeg
