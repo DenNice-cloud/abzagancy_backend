@@ -6,7 +6,7 @@ const prisma = new PrismaClient();
 async function main() {
   const apiUserUrl =
     "https://frontend-test-assignment-api.abz.agency/api/v1/users?page=1&count=50";
-    
+
   const apiPositionUrl =
     "https://frontend-test-assignment-api.abz.agency/api/v1/positions";
 
@@ -17,14 +17,18 @@ async function main() {
     const responsePositions = await axios.get(apiPositionUrl);
     const { success: successPositions, positions } = responsePositions.data;
 
-    if (successUsers && Array.isArray(users) && successPositions && Array.isArray(positions)) {
+    if (
+      successUsers &&
+      Array.isArray(users) &&
+      successPositions &&
+      Array.isArray(positions)
+    ) {
       await prisma.user.deleteMany({});
       await prisma.positions.deleteMany({});
 
       for (const position of positions) {
         await prisma.positions.create({
           data: {
-            id: position.id,
             name: position.name,
           },
         });
@@ -33,7 +37,6 @@ async function main() {
       for (const user of users) {
         await prisma.user.create({
           data: {
-            id: user.id,
             name: user.name,
             email: user.email,
             phone: user.phone,
@@ -44,7 +47,6 @@ async function main() {
         });
       }
     }
-
   } catch (error) {
     console.error("Error fetching or inserting data:", error);
   } finally {

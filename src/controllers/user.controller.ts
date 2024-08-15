@@ -66,7 +66,7 @@ const getUserById = async (req: Request, res: Response) => {
 };
 
 const postUser = async (req: Request, res: Response) => {
-  try {
+  // try {
     const { name, email, phone, positionId, photo } = req.body;
 
     const phoneRegex = /^[\+]{0,1}380([0-9]{9})$/;
@@ -88,13 +88,13 @@ const postUser = async (req: Request, res: Response) => {
     // User`s position id. You can get list of all positions with their IDs using the API method GET api/v1/positions.
     // Minimum size of photo 70x70px. The photo format must be jpeg/jpg type. The photo size must not be greater than 5 Mb.
 
-    console.log(
-      'name', name,
-      'email', email,
-      'phone', phone,
-      'positionId', positionId,
-      'photo', photo,
-    );
+    // console.log(
+    //   'name', name,
+    //   'email', email,
+    //   'phone', phone,
+    //   'positionId', positionId,
+    //   'photo', photo,
+    // );
     
     const user = await userService.postUser({
       name,
@@ -104,11 +104,13 @@ const postUser = async (req: Request, res: Response) => {
       photo,
     });
 
+    console.log('----------------------Created user:', user);
+
     return res.status(201).json(user);
-  } catch (error) {
-    console.error("Error creating user:", error);
-    return res.status(500).json({ message: "Internal Server Error" });
-  }
+  // } catch (error) {
+  //   console.error("Error creating user:", error);
+  //   return res.status(500).json({ message: "Internal Server Error" });
+  // }
 };
 
 export const userController = {

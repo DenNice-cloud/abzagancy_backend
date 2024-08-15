@@ -30,6 +30,7 @@ export const userService = {
       },
     });
 
+    console.log('----------------------------Created user:', user);
     return user;
   },
 
