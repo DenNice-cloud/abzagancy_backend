@@ -9,28 +9,35 @@ export const userService = {
     name,
     email,
     phone,
-    positionId,
+    positionName,
     photo,
   }: {
     name: string;
     email: string;
     phone: string;
-    positionId: string;
+    positionName: string;
     photo: string;
   }): Promise<User> => {
-    const parsedPositionId = parseInt(positionId, 10);
+    const position = await prisma.positions.findFirst({
+      where: {
+        name: positionName,
+      },
+    });
+
+    if (!position) {
+      throw new Error(`Position "${positionName}" not found.`);
+    }
 
     const user = await prisma.user.create({
       data: {
         name,
         email,
         phone,
-        positionId: parsedPositionId,
+        positionId: position.id,
         photo,
       },
     });
 
-    console.log('----------------------------Created user:', user);
     return user;
   },
 

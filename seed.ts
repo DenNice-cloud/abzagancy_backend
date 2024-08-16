@@ -1,3 +1,5 @@
+console.log("starting seed script........");
+
 import { PrismaClient } from "@prisma/client";
 import axios from "axios";
 
@@ -5,7 +7,7 @@ const prisma = new PrismaClient();
 
 async function main() {
   const apiUserUrl =
-    "https://frontend-test-assignment-api.abz.agency/api/v1/users?page=1&count=50";
+    "https://frontend-test-assignment-api.abz.agency/api/v1/users?page=1&count=100";
 
   const apiPositionUrl =
     "https://frontend-test-assignment-api.abz.agency/api/v1/positions";
@@ -26,21 +28,36 @@ async function main() {
       await prisma.user.deleteMany({});
       await prisma.positions.deleteMany({});
 
+      await prisma.$executeRaw`ALTER SEQUENCE "User_id_seq" RESTART WITH 1;`;
+      await prisma.$executeRaw`ALTER SEQUENCE "Positions_id_seq" RESTART WITH 1;`;
+
+      const positionMap: Record<number, number> = {};
+
       for (const position of positions) {
-        await prisma.positions.create({
+        const createdPosition = await prisma.positions.create({
           data: {
             name: position.name,
           },
         });
+        positionMap[position.id] = createdPosition.id;
       }
 
       for (const user of users) {
+        const positionId = positionMap[user.position_id];
+
+        if (!positionId) {
+          console.warn(
+            `Position with id ${user.position_id} not found for user ${user.name}. Skipping user.`
+          );
+          continue;
+        }
+
         await prisma.user.create({
           data: {
             name: user.name,
             email: user.email,
             phone: user.phone,
-            positionId: user.position_id,
+            positionId,
             registrationTimestamp: user.registration_timestamp,
             photo: user.photo,
           },
