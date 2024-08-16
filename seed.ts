@@ -1,5 +1,3 @@
-console.log("starting seed script........");
-
 import { PrismaClient } from "@prisma/client";
 import axios from "axios";
 

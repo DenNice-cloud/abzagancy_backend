@@ -99,16 +99,16 @@ const postUser = async (req: Request, res: Response) => {
       .json({ message: `Name is wrong, need from 3 to 60 symbols` });
   }
 
-  if (!phoneRegex.test(phone)) {
-    return res
-      .status(400)
-      .json({ message: `Phone is wrong, example - "380123456789"` });
-  }
-
   if (!emailRegex.test(email)) {
     return res
       .status(400)
       .json({ message: `Email is wrong, example - "name@some.com"` });
+  }
+
+  if (!phoneRegex.test(phone)) {
+    return res
+      .status(400)
+      .json({ message: `Phone is wrong, example - "380123456789"` });
   }
 
   if (!positionsValue.includes(positionName)) {
