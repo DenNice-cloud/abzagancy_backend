@@ -3,8 +3,11 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "start": "nodemon src/index.ts",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "npm install && npx prisma generate && npx prisma migrate deploy",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "migrate": "prisma migrate deploy",
+    "generate": "prisma generate",
+    "start": "nodemon src/index.ts"
   },
   "keywords": [],
   "author": "",
