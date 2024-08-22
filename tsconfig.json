@@ -4,13 +4,13 @@
       "./node_modules/@types",
       "./types" 
     ],
-    "module": "commonjs",
-    "target": "es6",
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "outDir": "./dist"
+    "outDir": "./build",
+    "module": "commonjs",
+    "target": "es6"
   },
   "include": ["src/**/*", "seed.ts"]
 }
