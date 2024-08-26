@@ -10,5 +10,5 @@ const authMiddleware_1 = require("../middlewares/authMiddleware");
 const userRouter = express_1.default.Router();
 exports.userRouter = userRouter;
 userRouter.get("/", authMiddleware_1.authMiddleware, user_controller_1.userController.getAllUsers);
-userRouter.post("/adduser", user_controller_1.userController.postUser);
+userRouter.post("/addUser", user_controller_1.userController.postUser);
 userRouter.get("/:id", user_controller_1.userController.getUserById);

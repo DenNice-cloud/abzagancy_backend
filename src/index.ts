@@ -14,6 +14,3 @@ app.use(express.static("static"));
 app.use("/", authRouter);
 app.use("/users", userRouter);
 
-app.listen(port, () => {
-  console.log(`Server is running on http://localhost:${port}`);
-});

@@ -5,7 +5,7 @@ import { authMiddleware } from "../middlewares/authMiddleware";
 const userRouter = express.Router();
 
 userRouter.get("/", authMiddleware, userController.getAllUsers);
-userRouter.post("/adduser", userController.postUser);
+userRouter.post("/addUser", userController.postUser);
 userRouter.get("/:id", userController.getUserById);
 
 export { userRouter };
